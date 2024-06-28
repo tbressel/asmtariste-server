@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["./*.ts", "middlewares/body-parser.ts", "classes/CsrfToken.ts", "classes/DatabaseConfig.ts", "classes/headersRoutesConfig.ts", "classes/QueryBuild.ts", "classes/ServerConfig.ts", "classes/TagsStyle.ts", "functions/token.ts"],
+  "exclude": ["node_modules"]
+}
