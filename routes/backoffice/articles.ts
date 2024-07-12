@@ -72,6 +72,7 @@ api.post('/article/create', upload.single('coverImage'), (req: Request, res: Res
     // read the data from the POST request
     let { title, description, idTagsList, idCategory, coverImage } = req.body as { title: string, description: string, idTagsList: string, idCategory: string, coverImage: File | null };
 
+
     // Check if the data are correct
     if (!title || !description || !idTagsList || !idCategory) {
         getJsonResponse(res, 500, "missing-datas", notificationMessages, false);

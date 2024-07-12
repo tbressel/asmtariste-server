@@ -380,4 +380,37 @@ api.post('/navigation/add-menu-item', token_1.authToken, (req, res) => {
         });
     });
 });
+/////////////////////////////////////////
+//////////   GET ADMIN MENU   ///////////
+/////////////////////////////////////////
+api.get('/navigation/get-admin-menu-items', (req, res) => {
+    // Get Connexion to the database
+    dbconnect.getConnection((error, connection) => {
+        // Check if we can connect to the database
+        if (error) {
+            (0, notifications_2.getJsonResponse)(res, 500, "dbconnect-error", notifications_1.notificationMessages, false);
+            return;
+        }
+        // Check if we reached the maximum of connection allowed
+        if ((0, pool_1.isMaxConnectionReached)(dbconnect)) {
+            (0, notifications_2.getJsonResponse)(res, 500, "maxconnect-reached", notifications_1.notificationMessages, false);
+            connection.release();
+            return;
+        }
+        // Prepare the SQL query
+        const sql = 'SELECT * FROM menu_admin';
+        // Execute the query
+        connection.query(sql, (error, results) => {
+            if (error) {
+                (0, notifications_2.getJsonResponse)(res, 500, "request-failure", notifications_1.notificationMessages, false);
+                connection.release();
+                return;
+            }
+            connection.release();
+            res.status(200).json({
+                body: results
+            });
+        });
+    });
+});
 exports.default = api;

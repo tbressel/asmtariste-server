@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 28 juin 2024 à 04:57
+-- Généré le : mer. 10 juil. 2024 à 15:16
 -- Version du serveur : 10.6.17-MariaDB-cll-lve
 -- Version de PHP : 8.1.26
 
@@ -31,12 +31,12 @@ CREATE TABLE `articles` (
   `id_articles` int(11) NOT NULL,
   `title` varchar(128) DEFAULT NULL,
   `creation_date` date DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
   `cover` varchar(128) DEFAULT NULL,
   `isDisplay` tinyint(1) DEFAULT NULL,
   `id_categories` int(11) NOT NULL,
   `id_users` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `articles`
@@ -57,7 +57,7 @@ INSERT INTO `articles` (`id_articles`, `title`, `creation_date`, `description`, 
 CREATE TABLE `categories` (
   `id_categories` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `categories`
@@ -78,7 +78,7 @@ CREATE TABLE `certificates` (
   `id_certificates` int(11) NOT NULL,
   `creationDate` date DEFAULT NULL,
   `note` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `certificates`
@@ -98,7 +98,7 @@ CREATE TABLE `choices` (
   `choice_name` varchar(50) DEFAULT NULL,
   `answer` tinyint(1) DEFAULT NULL,
   `id_questions` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `choices`
@@ -151,9 +151,9 @@ CREATE TABLE `contents` (
   `title_left` varchar(50) DEFAULT NULL,
   `title_right` varchar(50) DEFAULT NULL,
   `title_center` varchar(50) DEFAULT NULL,
-  `text_left` text DEFAULT NULL,
-  `text_right` text DEFAULT NULL,
-  `text_center` text DEFAULT NULL,
+  `text_left` mediumtext DEFAULT NULL,
+  `text_right` mediumtext DEFAULT NULL,
+  `text_center` mediumtext DEFAULT NULL,
   `image_left` varchar(50) DEFAULT NULL,
   `image_right` varchar(50) DEFAULT NULL,
   `image_center` varchar(50) DEFAULT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE `contents` (
   `page` tinyint(4) DEFAULT NULL,
   `id_templates` int(11) NOT NULL,
   `id_articles` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `contents`
@@ -201,10 +201,10 @@ INSERT INTO `contents` (`id_contents`, `title_left`, `title_right`, `title_cente
 (29, 'Rwabs', '', '', '<span class=\"bold\">Nom :</span> Lecture/Écriture absolue<br>\n<span class=\"bold\">Opcode :</span> 4<br>\n<span class=\"bold\">Syntaxe :</span> int32_t Rwabs ( int16_t rwflag, VOID *buff, int16_t cnt, int16_t recnr, int16_t dev, int32_t lrecno );;<br>\n<br>\n<span class=\"bold\">Description :</span> Description : La routine BIOS Rwabs lit ou écrit des données directement depuis ou vers le lecteur spécifié par dev. Le paramètre rwflag est un vecteur de bits qui spécifie le type d\'opération. Les valeurs valides sont :<br>\n<br>\nBit du rwflag	Signification<br>\n0	0 = Lecture, 1 = Écriture<br>\n1	0 = Prendre en compte le changement de média, 1 = Ne pas lire ou affecter l\'état de changement de média<br>\n2	0 = En cas d\'erreur, redémarrer une tentative, 1 = Ne pas redémarrer une tentative<br>\n3	0 = Mode normal, 1 = Mode physique (1)<br>\n<br>\nPour cela, un pilote de disque dur compatible avec AHDI 3.0 est requis.<br>\n', 'cnt secteurs depuis le tampon buff seront transférés. Dans recnr, le secteur de départ sur le lecteur sera spécifié. lrecno ne sera utilisé que si recnr a la valeur -1, et un pilote de disque dur compatible avec AHDI 3.0 est disponible.<br>\n<br>\n<span class=\"bold\">Valeur de retour :</span> La fonction retourne 0 en cas de succès, ou un code d\'erreur en cas d\'échec.<br>\n<br>\n<span class=\"bold\">Disponibilité :</span> Toutes les versions de TOS.<br>\n<br>\n<span class=\"code\">move.l    lrecno,-(sp)  ; Offset 14<br>\nmove.w    dev,-(sp)     ; Offset 12<br>\nmove.w    recnr,-(sp)   ; Offset 10<br>\nmove.w    cnt,-(sp)     ; Offset  8<br>\npea       buff          ; Offset  4<br>\nmove.w    rwflag,-(sp)  ; Offset  2<br>\nmove.w    #4,-(sp)      ; Offset  0<br>\ntrap      #13           ; Appel au BIOS<br>\nlea       $12(sp),sp    ; Correction de la pile</span><br>\n<br>\nGFA-Basic : <span class=\"code\">Fehler%=Bios(4,W:rwflag%,L:buff%,W:cnt%,W:recnr%,W:dev%,L:lrecno%)</span><br>\n', '', NULL, NULL, NULL, '', '', '', 3, 3, 2),
 (30, 'Setexc', '', '', '<span class=\"bold\">Nom :</span> Définir le vecteur d\'exception<br>\n<span class=\"bold\"><span class=\"bold\">Opcode :</span> 5<br>\nSyntaxe : </span>int32_t Setexc ( int16_t number, VOID (*vec)() );<br>\n<br>\n<span class=\"bold\">Description :</span> La routine BIOS Setexc définit ou lit le contenu des vecteurs d\'exception. Les valeurs valides sont :<br>\n<br>\nParamètre	Signification<br>\nnumber	Numéro du vecteur<br>\nvec	Nouvelle adresse (ou -1)<br>\n<br>\n<div class=\"border-yellow\"><p>Note : Si vec est -1L, alors la valeur précédente du vecteur est retournée.<br>\nLe numéro du vecteur d\'exception à définir est, par ailleurs, identique à l\'adresse à définir divisée par 4.</p></div>', '<span class=\"bold\">Valeur de retour :</span> La fonction retourne la valeur précédente (ou actuelle) du vecteur.<br>\n<br>\n<span class=\"bold\">Disponibilité :</span> Toutes les versions de TOS.<br>\n<br>\n<span class=\"code\">pea       exchdlr      ; Offset 4<br>\nmove.w    number,-(sp) ; Offset 2<br>\nmove.w    #5,-(sp)     ; Offset 0<br>\ntrap      #13          ; Appel au BIOS<br>\naddq.l    #8,sp        ; Correction de la pile</span><br>\n', '', NULL, NULL, NULL, '', '', '', 3, 3, 2),
 (31, 'Tickcal', '', '', '<span class=\"bold\">Nom :</span> Calcul de tick<br>\n<span class=\"bold\">Opcode :</span> 6<br>\n<span class=\"bold\">Syntaxe :</span> int32_t Tickcal ( VOID );<br>\n<br>\n<span class=\"bold\">Description :</span> La routine BIOS Tickcal retourne le nombre de millisecondes écoulées entre deux appels du temporisateur système.', '<span class=\"bold\">Note :</span> Pour cela, la fonction accède à la variable système _timr_ms.<br>\n<br>\n<span class=\"bold\">Valeur de retour :</span> Nombre de millisecondes correspondantes.<br>\n<br>\n<span class=\"bold\">Disponibilité :</span> Toutes les versions de TOS.<br>\n<br>\n<span class=\"code\">move.w    #6,-(sp)     ; Offset 0<br>\ntrap      #13          ; Appel au BIOS<br>\naddq.l    #2,sp        ; Correction de la pile</span><br>\n', '', NULL, NULL, NULL, '', '', '', 3, 3, 2),
-(32, 'I. Émulateur ou Atari ST ?', '', '', 'Le premier outil, c’est bien évidemment la machine sur laquelle ce code est destiné. Il y a deux écoles, tu choisis la méthode que tu souhaites.<br>\n<br>\nSi tu as un Atari 520ST, c’est bien, mais tu seras vite bloqué dès que les choses deviendront sérieuses. <span class=\"bold\">Idéalement, je te conseille un 1040STe</span> pour sa compatibilité avec un périphérique appelé <span class=\"italic\">« Ultra Satan »</span>, qui permet de simuler un disque dur de l’époque.<br>\n<br>\nVoici sur la photo de droite à quoi çà ressemble : 2 lecteur de carte SD.<br>\n<br>\n<div class=\"border-red\"><p>Par contre vérifie que ton Atari est bien compatible avec ce périphérique, il va falloir lui ouvrir le ventre et vérifier la version de la puce DMA.</p></div><br>\n<br>\nJe ferai un petit article sur le sujet, ayant plusieurs machine en ma possession, car ce n’est pas le sujet de cet article.', '', '', NULL, '1719525834993.png', NULL, '', '', '', 1, 1, 4),
+(32, 'I. Émulateur ou Atari ST ?', '', '', 'Le premier outil, c’est bien évidemment la machine sur laquelle ce code est destiné. Il y a deux écoles, tu choisis la méthode que tu souhaites.<br>\n<br>\nSi tu as un Atari 520ST, c’est bien, mais tu seras vite bloqué dès que les choses deviendront sérieuses. <span class=\"bold\">Idéalement, je te conseille un 1040STe</span> pour sa compatibilité avec un périphérique appelé <span class=\"italic\">« Ultra Satan »</span>, qui permet de simuler un disque dur de l’époque.<br>\n<br>\nVoici sur la photo de droite à quoi çà ressemble : 2 lecteur de carte SD.<br>\n<br>\n<div class=\"border-red\"><p>Par contre vérifie que ton Atari est bien compatible avec ce périphérique, il va falloir lui ouvrir le ventre et vérifier la version de la puce DMA.</p></div><br>\n<br>\nJe ferai un petit article sur le sujet, ayant plusieurs machine en ma possession, mais ce n’est pas le sujet de cet article.', '', '', NULL, '1719525834993.png', NULL, '', '', '', 1, 1, 4),
 (33, '', '', '', '', '', 'Si tu n’as pas de vraie machine chez toi, ce n’est pas très grave car il existe ce que l’on appelle des émulateurs, ce sont des  logiciels qui reproduisent l’interface et le comportement de l’Atari. <br>\n<br>\nIl en existe plusieurs, mais seuls deux sont réellement efficaces : <span class=\"hashtag\">Hatari 2.5</span> et <span class=\"hashtag\">Steem SSE</span> <span class=\"italic\">(personnellement, je ne suis pas à l’aise avec Steem SSE, je préfère Hatari, mais tu es libre de choisir celui qui te semble le plus adapté pour toi).</span><br>\nVoici où tu peux télécharger ces 2 émulateurs : <br>\n<a class=\"link\" href=\"https://hatari.tuxfamily.org/download.html\" target=\"blank\">Hatari download page</a><br>\n<a class=\"link\" href=\"https://sourceforge.net/projects/steemsse/\" target=\"blank\">Steven Seagal Emulator</a><br>\n<br>\n', NULL, NULL, NULL, '', '', '', 1, 4, 4),
 (34, '', '', '', '', '', '', '1719525898053.png', '1719525898054.png', NULL, '', '', '', 1, 2, 4),
-(35, 'II.L’éditeur / assembleur / débugger', '', '', '<span class=\"underline\">1 – L’assembleur</span><br>\n<br>\nLe premier outil est l\'assembleur lui-même. Il sert à prendre le code que tu as tapé et à le transformer <span class=\"bold\">dans le seul langage compréhensible par un ordinateur : le langage machine</span> <span class=\"italic\">(un langage composé uniquement de 0 et de 1, également appelé binaire, mais nous y reviendrons plus tard).</span><br>\n<br>\n<span class=\"underline\">2 – L’éditeur</span><br>\n<br>\nCet outil est muni d\'un éditeur de texte qui te permet de taper du code. C\'est précisément ce code qui est destiné à être assemblé pour être ensuite envoyé ou copié dans la mémoire de l\'ordinateur (la RAM), où il sera lu. Voici un schéma à droite qui représente les différentes étapes.<br>\n', '', '', NULL, '1719525934558.png', NULL, '', '', '', 2, 1, 4),
+(35, 'II.L’éditeur / assembleur / débugger', '', '', '<span class=\"underline\">1 – L’assembleur</span><br>\n<br>\nLe premier outil est l\'assembleur lui-même. Il sert à prendre le code que tu as tapé et à le transformer <span class=\"bold\">dans le seul langage compréhensible par un ordinateur : le langage machine</span> <span class=\"italic\">(un langage composé uniquement de 0 et de 1, également appelé langage binaire, mais nous y reviendrons plus tard).</span><br>\n<br>\n<span class=\"underline\">2 – L’éditeur</span><br>\n<br>\nCet outil est muni d\'un éditeur de texte qui te permet de taper du code. C\'est précisément ce code qui est destiné à être assemblé pour être ensuite stocké dans un fichier source. Ce fichier une fois exécuté est envoyé  dans la mémoire de l\'ordinateur (la RAM), où il sera lu. Voici un schéma à droite qui représente les différentes étapes.<br>\n', '', '', NULL, '1719525934558.png', NULL, '', '', '', 2, 1, 4),
 (36, '', '3 – Le débugger', '', '', 'Cet assembleur est souvent accompagné d’un débugger, qui peut être utilisé pour voir ce qui se passe dans la mémoire de l’ordinateur. <br>\nPar exemple, ton programme, une fois assemblé puis envoyé dans la RAM, peut tout à fait être visible par ce débugger ; il permet notamment de suivre pas à pas le comportement de ton programme.<br>\n<br>\nSur <span class=\"italic\">Atari ST</span>, l’assembleur le plus populaire est <span class=\"hashtag\">DevPac v3</span> de chez Hisoft<span class=\"italic\"> (jette un œil dans le menu de l’unité C du site)</span>. Sur PC, plusieurs solutions sont possibles pour les éditeurs, par exemple le tout simple mais efficace <span class=\"hashtag\">Notepad++</span> ou carrément des IDE comme <span class=\"hashtag\">VS Code</span>.', '', '1719526112267.png', NULL, NULL, '', '', '', 2, 6, 4),
 (37, '', '', '', '', '', 'Cette introduction est terminée, mais il va falloir encore patienter un tout petit peu avant de commencer à coder quelque chose. Il faut configurer ton émulateur et pour débuter je te propose l’utilisation de <span class=\"hashtag\">Hatari</span> et de l’assembleur <span class=\"hashtag\">DevPac v3</span>.', NULL, NULL, NULL, '', '', '', 2, 4, 4),
 (38, '', '', 'III. Configuration de l’émulateur Hatari', '', '', '<span class=\"underline\">1 – Le TOS</span><br>\n<br>\nLa première fois que tu vas lancer <span class=\"bold\">Hatari</span>, tu n’auras pas le bureau de GEM traditionnel que tu connais, mais un autre, c’est <span class=\"hashtag\">EmuTOS</span> ! Pour faire court, c’est un TOS plus évolué que l’original avec des options supplémentaires dans les menus entre autres choses. Pour vulgariser, le TOS c\'est le programme qui fait tourner ton Atari ST, tout comme Microsoft avait le DOS pour faire tourner Windows. Le GEM c\'est le nom de l\'interface toute verte qui sert de bureau.', NULL, NULL, NULL, '', '', '', 3, 4, 4),
@@ -237,7 +237,7 @@ CREATE TABLE `disk_units` (
   `letter` varchar(50) DEFAULT NULL,
   `icon` varchar(50) DEFAULT NULL,
   `isDisplay` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `disk_units`
@@ -246,7 +246,7 @@ CREATE TABLE `disk_units` (
 INSERT INTO `disk_units` (`id_disk_units`, `label`, `letter`, `icon`, `isDisplay`) VALUES
 (1, 'Coding', 'C', NULL, 1),
 (2, 'System', 'A', NULL, 1),
-(3, 'graphismes', 'B', NULL, 1),
+(3, 'Graphismes', 'B', NULL, 1),
 (4, 'PAO', 'D', NULL, 1);
 
 -- --------------------------------------------------------
@@ -259,7 +259,7 @@ CREATE TABLE `files` (
   `id_files` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL,
   `isDisplay` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `files`
@@ -296,7 +296,7 @@ CREATE TABLE `menu` (
   `link` varchar(50) DEFAULT NULL,
   `place` tinyint(4) DEFAULT NULL,
   `isDisplay` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `menu`
@@ -307,7 +307,7 @@ INSERT INTO `menu` (`id_menu`, `name`, `link`, `place`, `isDisplay`) VALUES
 (2, 'news', '/news', 2, NULL),
 (3, 'coding', '/coding', 3, NULL),
 (4, 'documentation', '/documentation', 4, NULL),
-(5, 'certificats', '/certificats', 5, NULL),
+(5, 'certificates', '/certificates', 5, NULL),
 (6, 'informations', '/informations', 6, NULL);
 
 -- --------------------------------------------------------
@@ -320,7 +320,7 @@ CREATE TABLE `questions` (
   `id_questions` int(11) NOT NULL,
   `text` varchar(256) DEFAULT NULL,
   `id_articles` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `questions`
@@ -348,7 +348,7 @@ INSERT INTO `questions` (`id_questions`, `text`, `id_articles`) VALUES
 CREATE TABLE `role` (
   `id_role` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `role`
@@ -369,7 +369,7 @@ CREATE TABLE `tags` (
   `id_tags` int(11) NOT NULL,
   `color` varchar(10) DEFAULT NULL,
   `label` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `tags`
@@ -414,7 +414,7 @@ CREATE TABLE `templates` (
   `isAttachementLeft` tinyint(1) DEFAULT NULL,
   `isAttachementRight` tinyint(1) DEFAULT NULL,
   `isAttachementCenter` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `templates`
@@ -440,7 +440,7 @@ INSERT INTO `templates` (`id_templates`, `isTitleLeft`, `isTitleRight`, `isTitle
 CREATE TABLE `to_contain` (
   `id_disk_units` int(11) NOT NULL,
   `id_files` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `to_contain`
@@ -475,7 +475,7 @@ CREATE TABLE `to_graduate` (
   `id_articles` int(11) NOT NULL,
   `id_users` int(11) NOT NULL,
   `id_certificates` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `to_graduate`
@@ -493,7 +493,7 @@ INSERT INTO `to_graduate` (`id_articles`, `id_users`, `id_certificates`) VALUES
 CREATE TABLE `to_have` (
   `id_articles` int(11) NOT NULL,
   `id_tags` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `to_have`
@@ -521,14 +521,19 @@ CREATE TABLE `users` (
   `lastname` varchar(50) DEFAULT NULL,
   `registrationDate` date DEFAULT NULL,
   `id_role` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id_users`, `username`, `email`, `hashpassword`, `isActivated`, `firstname`, `lastname`, `registrationDate`, `id_role`) VALUES
-(1, 'zisquier', 'tbressel.dev@gmail.com', '$2a$10$8WECOsML1uyIZPxqdKphaeg3kvM7kZmm/xysUcGAW6S4r5nA2LIrW', 1, 'null', 'null', '2024-06-27', 1);
+(1, 'zisquier', 'tbressel.dev@gmail.com', '$2a$10$8WECOsML1uyIZPxqdKphaeg3kvM7kZmm/xysUcGAW6S4r5nA2LIrW', 1, 'null', 'null', '2024-06-27', 1),
+(3, 'Shaoth', 'edamain@gmail.com', '$2a$10$DByJyQypaeg5r9hu1P2hweWmuY.lnteBIzZsidsEiJLw.pEVAdPvi', 1, 'null', 'null', '2024-07-05', 2),
+(5, 'Darian', 'jm.piamiat@gmail.com', '$2a$10$1obq.WkC2Rng9DKJvnEn1.2qJx83kFmlABAIMRT2knAIxSC0h4AU2', 1, 'null', 'null', '2024-07-10', 2),
+(6, 'duruti', 'duruti43@gmail.com', '$2a$10$VxkPQdGv0k30EdiPJOocH.CHpg/HwahHxIc/cT1V2E5zdkgpCoA7i', 1, 'null', 'null', '2024-07-10', 2),
+(7, 'Mokona', 'mokona@zaclys.net', '$2a$10$LXsMkkqAfUBpIPyH9aIuRehFbdr8f8w4zCOM/PrymUBIG77.1Bo0.', 1, 'null', 'null', '2024-07-10', 2),
+(8, 'caviar56', 'nprou1@free.fr', '$2a$10$Zi.mbB2zriA/TiKqDuhlzON8zGNe4DGkSa/QtLbkSO4tfqV9RtR.y', 1, 'null', 'null', '2024-07-10', 2);
 
 --
 -- Index pour les tables déchargées
@@ -721,7 +726,7 @@ ALTER TABLE `templates`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Contraintes pour les tables déchargées

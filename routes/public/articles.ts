@@ -237,6 +237,7 @@ api.get('/article-questions/:id', (req: Request, res: Response) => {
                 return;
             }
 
+
             connection.release();
             res.status(200).json({
                 body: results
