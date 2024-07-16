@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mer. 10 juil. 2024 à 15:16
+-- Généré le : ven. 12 juil. 2024 à 12:33
 -- Version du serveur : 10.6.17-MariaDB-cll-lve
 -- Version de PHP : 8.1.26
 
@@ -43,10 +43,10 @@ CREATE TABLE `articles` (
 --
 
 INSERT INTO `articles` (`id_articles`, `title`, `creation_date`, `description`, `cover`, `isDisplay`, `id_categories`, `id_users`) VALUES
-(1, 'ASMtariSTe est ouvert !', '2024-06-27', 'ASMtariste ouvre ses portes pour tout ceux qui souhaitent apprendre la programmation en assembleur 68000 sur Atari ST. ', NULL, 1, 2, 1),
-(2, 'À propos du BIOS', '2024-06-27', 'Le BIOS (Basic Input/Output System) représente l\'interface de plus bas niveau entre le système d\'exploitation de l\'Atari et le matériel, et est appelé via le Trap #13 du 680X0. Il est préférable que ces fonctions ne soient pas utilisées par les programmes applicatifs, car des fonctions beaucoup plus puissantes à un niveau supérieur sont disponibles pour fournir de meilleures alternatives.', NULL, 1, 3, 1),
-(3, 'Le Système d\'Exploitation TOS', '2024-06-27', 'Le système d\'exploitation TOS (The Operating System) peut être subdivisé en différentes sections. La communication avec les utilisateurs est réalisée via GEM, qui offre une interface utilisateur confortable et se compose des fonctions AES et VDI.', NULL, 1, 3, 1),
-(4, 'Savoir configurer les outils de développement', '2024-06-27', 'Avant toute chose, pour commencer à écrire du code, tu auras besoin de plusieurs outils et il te faudra apprendre à les utiliser. Ces outils peuvent être soit sur PC, soit directement sur Atari ST.', NULL, 1, 1, 1);
+(1, 'ASMtariSTe est ouvert !', '2024-06-27', 'ASMtariste ouvre ses portes pour tout ceux qui souhaitent apprendre la programmation en assembleur 68000 sur Atari ST. ', '1720686646713.png', 1, 2, 1),
+(2, 'À propos du BIOS', '2024-06-27', 'Le BIOS (Basic Input/Output System) représente l\'interface de plus bas niveau entre le système d\'exploitation de l\'Atari et le matériel, et est appelé via le Trap #13 du 680X0. Il est préférable que ces fonctions ne soient pas utilisées par les programmes applicatifs, car des fonctions beaucoup plus puissantes à un niveau supérieur sont disponibles pour fournir de meilleures alternatives.', '1720686675098.jpg', 1, 3, 1),
+(3, 'Le Système d\'Exploitation TOS', '2024-06-27', 'Le système d\'exploitation TOS (The Operating System) peut être subdivisé en différentes sections. La communication avec les utilisateurs est réalisée via GEM, qui offre une interface utilisateur confortable et se compose des fonctions AES et VDI.', '1720686675098.jpg', 1, 3, 1),
+(4, 'Savoir configurer les outils de développement', '2024-06-27', 'Avant toute chose, pour commencer à écrire du code, tu auras besoin de plusieurs outils et il te faudra apprendre à les utiliser. Ces outils peuvent être soit sur PC, soit directement sur Atari ST.', '1720686661546.jpg', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,9 @@ CREATE TABLE `certificates` (
 --
 
 INSERT INTO `certificates` (`id_certificates`, `creationDate`, `note`) VALUES
-(1, '2024-06-28', 13);
+(1, '2024-06-28', 13),
+(2, '2024-07-10', 16),
+(3, '2024-07-10', 16);
 
 -- --------------------------------------------------------
 
@@ -313,6 +315,31 @@ INSERT INTO `menu` (`id_menu`, `name`, `link`, `place`, `isDisplay`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `menu_admin`
+--
+
+CREATE TABLE `menu_admin` (
+  `id_menu_admin` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `link` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `menu_admin`
+--
+
+INSERT INTO `menu_admin` (`id_menu_admin`, `name`, `link`) VALUES
+(1, 'Menu Setting', '/menu-setting'),
+(2, 'Tous les articles', '/all-articles'),
+(3, 'Ajouter un article', '/create-article'),
+(4, 'Dossiers', '/disk-units-setting'),
+(5, 'Fichiers', '/unit-files-setting'),
+(6, 'Utilisateurs', '/all-users'),
+(7, 'Certificats', '/all-certificates');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `questions`
 --
 
@@ -482,7 +509,9 @@ CREATE TABLE `to_graduate` (
 --
 
 INSERT INTO `to_graduate` (`id_articles`, `id_users`, `id_certificates`) VALUES
-(4, 1, 1);
+(4, 1, 1),
+(4, 3, 2),
+(4, 7, 3);
 
 -- --------------------------------------------------------
 
@@ -533,7 +562,8 @@ INSERT INTO `users` (`id_users`, `username`, `email`, `hashpassword`, `isActivat
 (5, 'Darian', 'jm.piamiat@gmail.com', '$2a$10$1obq.WkC2Rng9DKJvnEn1.2qJx83kFmlABAIMRT2knAIxSC0h4AU2', 1, 'null', 'null', '2024-07-10', 2),
 (6, 'duruti', 'duruti43@gmail.com', '$2a$10$VxkPQdGv0k30EdiPJOocH.CHpg/HwahHxIc/cT1V2E5zdkgpCoA7i', 1, 'null', 'null', '2024-07-10', 2),
 (7, 'Mokona', 'mokona@zaclys.net', '$2a$10$LXsMkkqAfUBpIPyH9aIuRehFbdr8f8w4zCOM/PrymUBIG77.1Bo0.', 1, 'null', 'null', '2024-07-10', 2),
-(8, 'caviar56', 'nprou1@free.fr', '$2a$10$Zi.mbB2zriA/TiKqDuhlzON8zGNe4DGkSa/QtLbkSO4tfqV9RtR.y', 1, 'null', 'null', '2024-07-10', 2);
+(8, 'caviar56', 'nprou1@free.fr', '$2a$10$Zi.mbB2zriA/TiKqDuhlzON8zGNe4DGkSa/QtLbkSO4tfqV9RtR.y', 1, 'null', 'null', '2024-07-10', 2),
+(9, 'pasou94', 'pascalsou@hotmail.com', '$2a$10$CMrc5URcT4y.jqNHythVy.WkerA2ZKMuakOXdXS9hhQJtKUE8mON.', 0, 'null', 'null', '2024-07-11', 2);
 
 --
 -- Index pour les tables déchargées
@@ -591,6 +621,12 @@ ALTER TABLE `files`
 --
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id_menu`);
+
+--
+-- Index pour la table `menu_admin`
+--
+ALTER TABLE `menu_admin`
+  ADD PRIMARY KEY (`id_menu_admin`);
 
 --
 -- Index pour la table `questions`
@@ -666,7 +702,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `certificates`
 --
 ALTER TABLE `certificates`
-  MODIFY `id_certificates` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_certificates` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `choices`
@@ -699,6 +735,12 @@ ALTER TABLE `menu`
   MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT pour la table `menu_admin`
+--
+ALTER TABLE `menu_admin`
+  MODIFY `id_menu_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT pour la table `questions`
 --
 ALTER TABLE `questions`
@@ -726,7 +768,7 @@ ALTER TABLE `templates`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Contraintes pour les tables déchargées

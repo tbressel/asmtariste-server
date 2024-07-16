@@ -139,7 +139,7 @@ api.post('/register/signin', (req, res) => {
                         lastname: lastname,
                         username: username,
                         email: email,
-                    }, secretKey, { expiresIn: '10m' });
+                    }, secretKey, { expiresIn: '72h' });
                     // Prepare parameters for the activation email
                     const activationEmail = email;
                     const activationLink = 'https://www.thomas-bressel.com/activation?action=activate&token=' + sessionToken;

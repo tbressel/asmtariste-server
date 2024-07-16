@@ -184,7 +184,7 @@ api.get('/article-questions/:id', (req, res) => {
             return;
         }
         // prepare the sql query
-        const sql = `SELECT q.id_questions, q.text,
+        const sql = `SELECT q.id_questions, q.isMultiple, q.text,
         JSON_ARRAYAGG(JSON_OBJECT(c.id_choices, c.choice_name)) AS choices,
         (SELECT title FROM articles WHERE id_articles = ?) AS title
         FROM questions q

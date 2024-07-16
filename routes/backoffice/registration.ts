@@ -163,7 +163,7 @@ api.post('/register/signin', (req: Request, res: Response) => {
                         email: email,
                     },
                         secretKey,
-                        { expiresIn: '10m' });
+                        { expiresIn: '72h' });
 
 
                     // Prepare parameters for the activation email

@@ -37,7 +37,7 @@ const sendActivationEmail = (email, activationLink) => {
             <br>
             Pour activer ton compte, clique sur le lien suivant : <a href="${activationLink}">${activationLink}</a>
             <br>
-            (Dépêche-toi, le lien n'est valable que 10 minutes !)
+            (Dépêche-toi, le lien n'est valable que 72 heures !)
             <br>
             A bientôt sur le site !<br>
             <br>

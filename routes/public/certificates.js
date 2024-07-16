@@ -152,6 +152,122 @@ api.post('/create-certificate/:id', token_1.authToken, (req, res) => {
     });
 });
 ////////////////////////////////////////
+////////   ALL CERTIFICATES   //////////
+///////////////////////////////////////
+api.get('/all-certificates/', token_1.authToken, (req, res) => {
+    // Get the id user from the token
+    const id_users = req.results.id_user;
+    // check if the values are not empty
+    if (id_users === undefined) {
+        (0, notifications_2.getJsonResponse)(res, 500, "missing-datas", notifications_1.notificationMessages, false);
+        return;
+    }
+    // Create the connection to the database
+    dbconnect.getConnection((error, connection) => {
+        // Check if we can connect to the database
+        if (error) {
+            (0, notifications_2.getJsonResponse)(res, 500, "dbconnect-error", notifications_1.notificationMessages, false);
+            return;
+        }
+        // Check if we reached the maximum of connection allowed
+        if ((0, pool_1.isMaxConnectionReached)(dbconnect)) {
+            (0, notifications_2.getJsonResponse)(res, 500, "maxconnect-reached", notifications_1.notificationMessages, false);
+            connection.release();
+            return;
+        }
+        // Prepare the query to get the certificates
+        const sqlQuery = `SELECT certificates.id_certificates, certificates.note, certificates.creationDate, users.username, articles.title
+                                    FROM to_graduate
+                                    JOIN users USING (id_users)
+                                    JOIN articles USING (id_articles)
+                                    JOIN certificates USING (id_certificates)`;
+        // Execute the query
+        connection.query(sqlQuery, [id_users], (error, results) => {
+            if (error) {
+                (0, notifications_2.getJsonResponse)(res, 500, "request-failure", notifications_1.notificationMessages, false);
+                connection.release();
+                return;
+            }
+            else {
+                connection.release();
+                // Send the response to the client
+                res.status(200).json({
+                    body: results
+                });
+            }
+        });
+    });
+});
+////////////////////////////////////////
+////////   DELETE CERTIFICATE   //////////
+///////////////////////////////////////
+api.delete('/delete-certificate/:id', token_1.authToken, (req, res) => {
+    // get the id from the slug
+    let id = req.params.id;
+    id = parseInt(id);
+    // Check if id exists
+    if (!id || id === undefined || id === null) {
+        (0, notifications_2.getJsonResponse)(res, 500, "missing-datas", notifications_1.notificationMessages, false);
+        return;
+    }
+    // Establish a connection to the database
+    dbconnect.getConnection((error, connection) => {
+        // Check if we can connect to the database
+        if (error) {
+            (0, notifications_2.getJsonResponse)(res, 500, "dbconnect-error", notifications_1.notificationMessages, false);
+            return;
+        }
+        // Check if we reached the maximum of connection allowed
+        if ((0, pool_1.isMaxConnectionReached)(dbconnect)) {
+            (0, notifications_2.getJsonResponse)(res, 500, "maxconnect-reached", notifications_1.notificationMessages, false);
+            connection.release();
+            return;
+        }
+        // Start a transaction to execute or rollback the both queries
+        connection.beginTransaction((error) => __awaiter(void 0, void 0, void 0, function* () {
+            if (error) {
+                (0, notifications_2.getJsonResponse)(res, 500, "transaction-start-failed", notifications_1.notificationMessages, false);
+                connection.release();
+                return;
+            }
+            // Convert connection.query into a function that returns a promise 
+            const query = (0, util_1.promisify)(connection.query).bind(connection);
+            try {
+                // prepare the zero query
+                const sql1 = "DELETE FROM to_graduate WHERE id_certificates = ?;";
+                // Execute the 0 query
+                const resultsQuery1 = yield query(sql1, [id]);
+                // prepare the next query
+                const sql2 = `DELETE FROM certificates WHERE id_certificates = ?`;
+                // Execute the query
+                const resultsQuery2 = yield query(sql2, [id]);
+                // If all queries succeeded, commit the transaction
+                connection.commit((error) => {
+                    if (error) {
+                        return connection.rollback(() => {
+                            throw error;
+                        });
+                    }
+                });
+                // Send the response to the client
+                res.status(200).json({
+                    message: "Certificat supprimé avec succès"
+                });
+            }
+            catch (error) {
+                // If an error occurred, rollback the transaction
+                connection.rollback(() => {
+                    (0, notifications_2.getJsonResponse)(res, 500, "delete-failure", notifications_1.notificationMessages, false);
+                });
+            }
+            finally {
+                // Release the connection
+                connection.release();
+            }
+        }));
+    });
+});
+////////////////////////////////////////
 ////////   SHOW CERTIFICATE   //////////
 ///////////////////////////////////////
 api.get('/get-certificates/', token_1.authToken, (req, res) => {
