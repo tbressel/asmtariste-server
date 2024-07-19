@@ -168,7 +168,7 @@ api.post('/register/signin', (req: Request, res: Response) => {
 
                     // Prepare parameters for the activation email
                     const activationEmail = email;
-                    const activationLink = 'https://www.thomas-bressel.com/activation?action=activate&token=' + sessionToken;
+                    const activationLink = 'https://asmtariste.thomas-bressel.com/activation?action=activate&token=' + sessionToken;
 
                     sendActivationEmail(activationEmail, activationLink)
                         .then(() => {

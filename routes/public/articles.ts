@@ -71,29 +71,35 @@ api.get('/last-articles/:id', (req: Request, res: Response) => {
 
         // prepare the sql query
         const sql: string = `SELECT 
-        articles.id_articles, 
-        articles.title, 
-        articles.creation_date, 
-        CONCAT(SUBSTRING(articles.description, 1, 128), '...') AS description,  
-        articles.cover, 
-        users.username, 
-        GROUP_CONCAT(tags.label) AS tags,
-        articles.id_categories
-    FROM 
-        articles
-    JOIN 
-        users ON articles.id_users = users.id_users
-    JOIN
-        to_have ON articles.id_articles = to_have.id_articles
-    JOIN
-        tags ON to_have.id_tags = tags.id_tags
-        
-    WHERE articles.isDisplay = 1 AND articles.id_categories = ?
-    
-    GROUP BY 
-        articles.id_articles
-    ORDER BY 
-        articles.creation_date ASC`;
+    articles.id_articles, 
+    articles.title, 
+    articles.creation_date, 
+    CONCAT(SUBSTRING(articles.description, 1, 128), '...') AS description,  
+    articles.cover, 
+    users.username, 
+    GROUP_CONCAT(tags.label SEPARATOR ', ') AS tags,
+    articles.id_categories
+FROM 
+    articles
+JOIN 
+    users ON articles.id_users = users.id_users
+LEFT JOIN
+    to_have ON articles.id_articles = to_have.id_articles
+LEFT JOIN
+    tags ON to_have.id_tags = tags.id_tags
+WHERE 
+    articles.isDisplay = 1 
+    AND articles.id_categories = ?
+GROUP BY 
+    articles.id_articles, 
+    articles.title, 
+    articles.creation_date, 
+    articles.description, 
+    articles.cover, 
+    users.username, 
+    articles.id_categories
+ORDER BY 
+    articles.creation_date ASC;`;
 
         // execute the query
         connection.query(sql, [id], (error: Error | null, results: any) => {
@@ -103,9 +109,13 @@ api.get('/last-articles/:id', (req: Request, res: Response) => {
                 return;
             }
 
-            // Convert tags from string to array
+            // Convert tags from string to array or mark as "No Tag" if null
             for (let i = 0; i < results.length; i++) {
-                results[i].tags = results[i].tags.split(',');
+                if (results[i].tags == null || results[i].tags === '') {
+                    results[i].tags = ["No Tag"]; // Utilisez un tableau avec "No Tag" pour garder le type de données cohérent
+                } else {
+                    results[i].tags = results[i].tags.split(',');
+                }
             }
 
             connection.release();

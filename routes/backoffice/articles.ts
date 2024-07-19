@@ -275,20 +275,23 @@ api.get('/all-articles', (req: Request, res: Response) => {
         }
 
         // prepare the query
-        const sql: string = `SELECT articles.id_articles, articles.title, articles.creation_date, articles.isDisplay, 
-        CONCAT(SUBSTRING(articles.description, 1, 50), '...') AS description, categories.name AS 'category', users.username
-    FROM 
-        articles
-    JOIN 
-        users ON articles.id_users = users.id_users
-    JOIN
-        categories ON articles.id_categories = categories.id_categories
-    JOIN
-        to_have ON articles.id_articles = to_have.id_articles    
-    GROUP BY 
-        articles.id_articles
-    ORDER BY 
-        articles.creation_date ASC`;
+        const sql: string = `SELECT 
+    articles.id_articles, 
+    articles.title, 
+    articles.creation_date, 
+    articles.isDisplay, 
+    CONCAT(SUBSTRING(articles.description, 1, 50), '...') AS description, 
+    categories.name AS category, 
+    users.username
+FROM 
+    articles
+JOIN 
+    users ON articles.id_users = users.id_users
+JOIN
+    categories ON articles.id_categories = categories.id_categories
+
+ORDER BY 
+    articles.creation_date ASC;`;
 
         connection.query(sql, (error: Error, results: any) => {
             if (error) {
@@ -514,32 +517,30 @@ api.delete('/article/delete/:id', (req: Request, res: Response) => {
             const query = promisify(connection.query).bind(connection);
 
             try {
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////// TO DELETE CERTIFICATES ASSOCIATED TO THE ARTICLES //////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
+                // // prepare the zero query
+                // const sqla: string = "SELECT id_certificates FROM to_graduate WHERE id_articles = ?";
 
-                // prepare the zero query
-                const sqla: string = "SELECT id_certificates FROM to_graduate WHERE id_articles = ?";
+                // // Execute the 0 query
+                // const resultsQuerya = await query(sqla, [id]);
 
-                // Execute the 0 query
-                const resultsQuerya = await query(sqla, [id]);
+                // // prepare the zero query
+                // const sql0: string = "DELETE FROM to_graduate WHERE id_articles = ?";
 
+                // // Execute the 0 query
+                // const resultsQuery0 = await query(sql0, [id]);
 
-                // prepare the zero query
-                const sql0: string = "DELETE FROM to_graduate WHERE id_articles = ?";
-
-                // Execute the 0 query
-                const resultsQuery0 = await query(sql0, [id]);
-
-
-
-                // Boucle sur chaque résultat pour supprimer les entrées correspondantes
-                for (const row of resultsQuerya) {
-                    const deleteSql = "DELETE FROM certificates WHERE id_certificates = ?";
-                    await query(deleteSql, [row.id_certificates]);
-                }
+                // // Boucle sur chaque résultat pour supprimer les entrées correspondantes
+                // for (const row of resultsQuerya) {
+                //     const deleteSql = "DELETE FROM certificates WHERE id_certificates = ?";
+                //     const deleteQuery = await query(deleteSql, [row.id_certificates]);
+                // }
                                 
-
-
-
-
+                ///////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////// TO DELETE CONTENT AND ARTICLE //////////////////////////
+                ///////////////////////////////////////////////////////////////////////////////////
                 // prepare the first query
                 const sql: string = "DELETE FROM to_have WHERE id_articles = ?";
 
@@ -552,11 +553,16 @@ api.delete('/article/delete/:id', (req: Request, res: Response) => {
                 // Execute the 2nd query
                 const resultsQuery3 = await query(sql3, [id]);
 
+                // Désactiver les vérifications des clés étrangères
+                await query("SET FOREIGN_KEY_CHECKS=0");
                 //  prepare the third query
                 const sql2: string = "DELETE FROM articles WHERE id_articles = ?";
 
                 // Execute the 3rd query
                 const resultsQuery2 = await query(sql2, [id]);
+
+                // Réactiver les vérifications des clés étrangères
+                await query("SET FOREIGN_KEY_CHECKS=1");
 
                 // If all queries succeeded, commit the transaction
                 connection.commit((err: Error) => {
@@ -569,9 +575,6 @@ api.delete('/article/delete/:id', (req: Request, res: Response) => {
 
                 // Send the response to the client
                 res.status(200).json({
-                    query1: resultsQuery1,
-                    query2: resultsQuery2,
-                    query3: resultsQuery3,
                     message: "Article supprimé"
                 });
 
@@ -579,7 +582,6 @@ api.delete('/article/delete/:id', (req: Request, res: Response) => {
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
                     getJsonResponse(res, 500, "certificate-failure", notificationMessages, false);
-                    connection.release();
                     return;
                 });
             } finally {

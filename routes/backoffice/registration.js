@@ -142,7 +142,7 @@ api.post('/register/signin', (req, res) => {
                     }, secretKey, { expiresIn: '72h' });
                     // Prepare parameters for the activation email
                     const activationEmail = email;
-                    const activationLink = 'https://www.thomas-bressel.com/activation?action=activate&token=' + sessionToken;
+                    const activationLink = 'https://asmtariste.thomas-bressel.com/activation?action=activate&token=' + sessionToken;
                     (0, activation_email_1.sendActivationEmail)(activationEmail, activationLink)
                         .then(() => {
                         //  If not then prepare and execute the SQL query

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 12 juil. 2024 à 12:33
+-- Généré le : mar. 16 juil. 2024 à 18:44
 -- Version du serveur : 10.6.17-MariaDB-cll-lve
 -- Version de PHP : 8.1.26
 
@@ -85,9 +85,9 @@ CREATE TABLE `certificates` (
 --
 
 INSERT INTO `certificates` (`id_certificates`, `creationDate`, `note`) VALUES
-(1, '2024-06-28', 13),
-(2, '2024-07-10', 16),
-(3, '2024-07-10', 16);
+(7, '2024-07-16', 20),
+(8, '2024-07-16', 20),
+(9, '2024-07-16', 20);
 
 -- --------------------------------------------------------
 
@@ -129,9 +129,9 @@ INSERT INTO `choices` (`id_choices`, `choice_name`, `answer`, `id_questions`) VA
 (20, 'Dans la mémoire RAM', 0, 7),
 (21, 'Dans un fichier source', 1, 7),
 (22, 'Sur un disque dur externe', 0, 7),
-(23, 'Devpac', 0, 8),
+(23, 'DavePac', 0, 8),
 (24, 'ASM-One', 0, 8),
-(25, 'HiSoft DavePac 3', 1, 8),
+(25, 'HiSoft DevPac 3', 1, 8),
 (26, 'Le bureau EmuTOS', 0, 9),
 (27, 'Le bureau GEM', 1, 9),
 (28, 'Le bureau TOS', 0, 9),
@@ -207,7 +207,7 @@ INSERT INTO `contents` (`id_contents`, `title_left`, `title_right`, `title_cente
 (33, '', '', '', '', '', 'Si tu n’as pas de vraie machine chez toi, ce n’est pas très grave car il existe ce que l’on appelle des émulateurs, ce sont des  logiciels qui reproduisent l’interface et le comportement de l’Atari. <br>\n<br>\nIl en existe plusieurs, mais seuls deux sont réellement efficaces : <span class=\"hashtag\">Hatari 2.5</span> et <span class=\"hashtag\">Steem SSE</span> <span class=\"italic\">(personnellement, je ne suis pas à l’aise avec Steem SSE, je préfère Hatari, mais tu es libre de choisir celui qui te semble le plus adapté pour toi).</span><br>\nVoici où tu peux télécharger ces 2 émulateurs : <br>\n<a class=\"link\" href=\"https://hatari.tuxfamily.org/download.html\" target=\"blank\">Hatari download page</a><br>\n<a class=\"link\" href=\"https://sourceforge.net/projects/steemsse/\" target=\"blank\">Steven Seagal Emulator</a><br>\n<br>\n', NULL, NULL, NULL, '', '', '', 1, 4, 4),
 (34, '', '', '', '', '', '', '1719525898053.png', '1719525898054.png', NULL, '', '', '', 1, 2, 4),
 (35, 'II.L’éditeur / assembleur / débugger', '', '', '<span class=\"underline\">1 – L’assembleur</span><br>\n<br>\nLe premier outil est l\'assembleur lui-même. Il sert à prendre le code que tu as tapé et à le transformer <span class=\"bold\">dans le seul langage compréhensible par un ordinateur : le langage machine</span> <span class=\"italic\">(un langage composé uniquement de 0 et de 1, également appelé langage binaire, mais nous y reviendrons plus tard).</span><br>\n<br>\n<span class=\"underline\">2 – L’éditeur</span><br>\n<br>\nCet outil est muni d\'un éditeur de texte qui te permet de taper du code. C\'est précisément ce code qui est destiné à être assemblé pour être ensuite stocké dans un fichier source. Ce fichier une fois exécuté est envoyé  dans la mémoire de l\'ordinateur (la RAM), où il sera lu. Voici un schéma à droite qui représente les différentes étapes.<br>\n', '', '', NULL, '1719525934558.png', NULL, '', '', '', 2, 1, 4),
-(36, '', '3 – Le débugger', '', '', 'Cet assembleur est souvent accompagné d’un débugger, qui peut être utilisé pour voir ce qui se passe dans la mémoire de l’ordinateur. <br>\nPar exemple, ton programme, une fois assemblé puis envoyé dans la RAM, peut tout à fait être visible par ce débugger ; il permet notamment de suivre pas à pas le comportement de ton programme.<br>\n<br>\nSur <span class=\"italic\">Atari ST</span>, l’assembleur le plus populaire est <span class=\"hashtag\">DevPac v3</span> de chez Hisoft<span class=\"italic\"> (jette un œil dans le menu de l’unité C du site)</span>. Sur PC, plusieurs solutions sont possibles pour les éditeurs, par exemple le tout simple mais efficace <span class=\"hashtag\">Notepad++</span> ou carrément des IDE comme <span class=\"hashtag\">VS Code</span>.', '', '1719526112267.png', NULL, NULL, '', '', '', 2, 6, 4),
+(36, '', '3 – Le débugger', '', '', 'Cet assembleur est souvent accompagné d’un débugger, qui peut être utilisé pour voir ce qui se passe dans la mémoire de l’ordinateur. <br>\nPar exemple, ton programme, une fois assemblé, exécuté puis envoyé dans la RAM, peut tout à fait être visible par ce débugger ; il permet notamment de suivre pas à pas le comportement de ton programme.<br>\n<br>\nSur <span class=\"italic\">Atari ST</span>, l’assembleur le plus populaire est <span class=\"hashtag\">DevPac v3</span> de chez Hisoft<span class=\"italic\"> (jette un œil dans le menu de l’unité C du site)</span>. Sur PC, plusieurs solutions sont possibles pour les éditeurs, par exemple le tout simple mais efficace <span class=\"hashtag\">Notepad++</span> ou carrément des IDE comme <span class=\"hashtag\">VS Code</span>.', '', NULL, NULL, NULL, '', '', '', 2, 6, 4),
 (37, '', '', '', '', '', 'Cette introduction est terminée, mais il va falloir encore patienter un tout petit peu avant de commencer à coder quelque chose. Il faut configurer ton émulateur et pour débuter je te propose l’utilisation de <span class=\"hashtag\">Hatari</span> et de l’assembleur <span class=\"hashtag\">DevPac v3</span>.', NULL, NULL, NULL, '', '', '', 2, 4, 4),
 (38, '', '', 'III. Configuration de l’émulateur Hatari', '', '', '<span class=\"underline\">1 – Le TOS</span><br>\n<br>\nLa première fois que tu vas lancer <span class=\"bold\">Hatari</span>, tu n’auras pas le bureau de GEM traditionnel que tu connais, mais un autre, c’est <span class=\"hashtag\">EmuTOS</span> ! Pour faire court, c’est un TOS plus évolué que l’original avec des options supplémentaires dans les menus entre autres choses. Pour vulgariser, le TOS c\'est le programme qui fait tourner ton Atari ST, tout comme Microsoft avait le DOS pour faire tourner Windows. Le GEM c\'est le nom de l\'interface toute verte qui sert de bureau.', NULL, NULL, NULL, '', '', '', 3, 4, 4),
 (39, '', '', '', '', '', '', NULL, NULL, '1719526300168.png', '', '', '', 3, 5, 4),
@@ -329,9 +329,8 @@ CREATE TABLE `menu_admin` (
 --
 
 INSERT INTO `menu_admin` (`id_menu_admin`, `name`, `link`) VALUES
-(1, 'Menu Setting', '/menu-setting'),
-(2, 'Tous les articles', '/all-articles'),
-(3, 'Ajouter un article', '/create-article'),
+(1, 'Menu', '/menu-setting'),
+(2, 'Articles', '/all-articles'),
 (4, 'Dossiers', '/disk-units-setting'),
 (5, 'Fichiers', '/unit-files-setting'),
 (6, 'Utilisateurs', '/all-users'),
@@ -346,25 +345,26 @@ INSERT INTO `menu_admin` (`id_menu_admin`, `name`, `link`) VALUES
 CREATE TABLE `questions` (
   `id_questions` int(11) NOT NULL,
   `text` varchar(256) DEFAULT NULL,
-  `id_articles` int(11) DEFAULT NULL
+  `id_articles` int(11) DEFAULT NULL,
+  `isMultiple` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `questions`
 --
 
-INSERT INTO `questions` (`id_questions`, `text`, `id_articles`) VALUES
-(1, 'Qu\'est-ce qu\'un émulateur ?', 4),
-(2, 'À quoi sert un Ultra Satan ?', 4),
-(3, 'Quel est le seul langage que l\'ordinateur comprend ?', 4),
-(4, 'À quoi sert un éditeur de texte ?', 4),
-(5, 'Quel est le rôle principal d\'un assembleur ?', 4),
-(6, 'Où est stocké le code saisi dans l\'éditeur après l\'assemblage ?', 4),
-(7, 'Où est stocké le code source saisi dans l\'éditeur ?', 4),
-(8, 'Comment s\'appelle l\'assembleur édité par Hisoft ?', 4),
-(9, 'Comment se nomme ce bureau tout vert lorsque l\'on allume un Atari ST ?', 4),
-(10, 'Que désigne le TOS ?', 4),
-(11, 'Que désigne ASCI pour l\'Atari ST ?', 4);
+INSERT INTO `questions` (`id_questions`, `text`, `id_articles`, `isMultiple`) VALUES
+(1, 'Qu\'est-ce qu\'un émulateur ?', 4, 0),
+(2, 'À quoi sert un Ultra Satan ?', 4, 0),
+(3, 'Quel est le seul langage que l\'ordinateur comprend ?', 4, 0),
+(4, 'À quoi sert un éditeur de texte ?', 4, 0),
+(5, 'Quel est le rôle principal d\'un assembleur ?', 4, 0),
+(6, 'Où est stocké le code saisi dans l\'éditeur après l\'assemblage ?', 4, 0),
+(7, 'Où est stocké le code source saisi dans l\'éditeur ?', 4, 0),
+(8, 'Comment s\'appelle l\'assembleur édité par Hisoft ?', 4, 0),
+(9, 'Comment se nomme ce bureau tout vert lorsque l\'on allume un Atari ST ?', 4, 0),
+(10, 'Que désigne le TOS ?', 4, 0),
+(11, 'Que désigne ASCI pour l\'Atari ST ?', 4, 0);
 
 -- --------------------------------------------------------
 
@@ -509,9 +509,9 @@ CREATE TABLE `to_graduate` (
 --
 
 INSERT INTO `to_graduate` (`id_articles`, `id_users`, `id_certificates`) VALUES
-(4, 1, 1),
-(4, 3, 2),
-(4, 7, 3);
+(4, 1, 7),
+(4, 3, 8),
+(4, 10, 9);
 
 -- --------------------------------------------------------
 
@@ -563,7 +563,8 @@ INSERT INTO `users` (`id_users`, `username`, `email`, `hashpassword`, `isActivat
 (6, 'duruti', 'duruti43@gmail.com', '$2a$10$VxkPQdGv0k30EdiPJOocH.CHpg/HwahHxIc/cT1V2E5zdkgpCoA7i', 1, 'null', 'null', '2024-07-10', 2),
 (7, 'Mokona', 'mokona@zaclys.net', '$2a$10$LXsMkkqAfUBpIPyH9aIuRehFbdr8f8w4zCOM/PrymUBIG77.1Bo0.', 1, 'null', 'null', '2024-07-10', 2),
 (8, 'caviar56', 'nprou1@free.fr', '$2a$10$Zi.mbB2zriA/TiKqDuhlzON8zGNe4DGkSa/QtLbkSO4tfqV9RtR.y', 1, 'null', 'null', '2024-07-10', 2),
-(9, 'pasou94', 'pascalsou@hotmail.com', '$2a$10$CMrc5URcT4y.jqNHythVy.WkerA2ZKMuakOXdXS9hhQJtKUE8mON.', 0, 'null', 'null', '2024-07-11', 2);
+(9, 'pasou94', 'pascalsou@hotmail.com', '$2a$10$CMrc5URcT4y.jqNHythVy.WkerA2ZKMuakOXdXS9hhQJtKUE8mON.', 1, 'null', 'null', '2024-07-11', 2),
+(10, 'dlfrsilver', 'dlfrsilver@gmail.com', '$2a$10$GujEGaFT7MJXoxX5RZWUYua1iMOuO.jHBcPJyeElR6gZkYZOVhBc.', 1, 'null', 'null', '2024-07-15', 2);
 
 --
 -- Index pour les tables déchargées
@@ -702,7 +703,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `certificates`
 --
 ALTER TABLE `certificates`
-  MODIFY `id_certificates` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_certificates` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `choices`
@@ -768,7 +769,7 @@ ALTER TABLE `templates`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Contraintes pour les tables déchargées

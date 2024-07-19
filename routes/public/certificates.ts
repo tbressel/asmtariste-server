@@ -162,7 +162,6 @@ api.post('/create-certificate/:id', authToken, (req: any, res: Response) => {
                         // If an error occurred, rollback the transaction
                         connection.rollback(() => {
                             getJsonResponse(res, 500, "certificate-failure", notificationMessages, false);
-                            connection.release();
                             return;
                         });
                     } finally {
@@ -223,6 +222,104 @@ api.get('/all-certificates/', authToken, (req: any, res: Response) => {
                 // Send the response to the client
                 res.status(200).json({
                     body: results
+                });
+            }
+        });
+    });
+});
+
+
+////////////////////////////////////////
+////////   LAST CERTIFICATES   /////////
+///////////////////////////////////////
+api.get('/last-certificates/', (req: any, res: Response) => {
+
+
+    // Create the connection to the database
+    dbconnect.getConnection((error: Error, connection: any) => {
+        // Check if we can connect to the database
+        if (error) {
+            getJsonResponse(res, 500, "dbconnect-error", notificationMessages, false);
+            return;
+        }
+
+        // Check if we reached the maximum of connection allowed
+        if (isMaxConnectionReached(dbconnect)) {
+            getJsonResponse(res, 500, "maxconnect-reached", notificationMessages, false);
+            connection.release();
+            return;
+        }
+
+        // Prepare the query to get the certificates
+        const sqlQuery: string = `SELECT certificates.note, certificates.creationDate, users.username, articles.title
+                                    FROM to_graduate
+                                    JOIN users USING (id_users)
+                                    JOIN articles USING (id_articles)
+                                    JOIN certificates USING (id_certificates)
+                                    ORDER BY certificates.creationDate DESC`;
+
+        // Execute the query
+        connection.query(sqlQuery, (error: Error, results: Object) => {
+            if (error) {
+                getJsonResponse(res, 500, "request-failure", notificationMessages, false);
+                connection.release();
+                return;
+            } else {
+
+                const queryResult = (results as Array<any>);
+                console.log(queryResult);
+                let medalType: string = '';
+                let medalColour: string = '';
+                let courseLevel: number = 1;
+                let medalUrl: string = '';
+
+                for (const item of queryResult) {
+                  
+                    // Détermination du type de médaille basée sur la note
+                    if (item.note <= 15) {
+                      medalType = 'bronze';
+                    } else if (item.note >= 16 && item.note <= 18) {
+                      medalType = 'silver';
+                    } else if (item.note >= 19) {
+                      medalType = 'gold';
+                    }
+                  
+                    // Détermination de la couleur de la médaille basée sur le niveau du cours
+                    switch (courseLevel) {
+                      case 1:
+                        medalColour = 'green';
+                        break;
+                      case 2:
+                        medalColour = 'yellow';
+                        break;
+                      case 3:
+                        medalColour = 'orange';
+                        break;
+                      case 4:
+                        medalColour = 'cyan';
+                        break;
+                      case 5:
+                        medalColour = 'blue';
+                        break;
+                      case 6:
+                        medalColour = 'red';
+                        break;
+                      default:
+                        medalColour = 'unknown'; 
+                    }
+                  
+                    // Construction de l'URL de la médaille
+                    medalUrl = `${medalType}-${medalColour}.webp`;
+                  
+                    // Ajout de la clé "medal" avec l'URL de la médaille au résultat
+                    item.medal = medalUrl;
+                  }
+
+
+                connection.release();
+                // Send the response to the client
+                res.status(200).json({
+                    body: results                    
                 });
             }
         });
