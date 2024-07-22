@@ -159,7 +159,6 @@ api.delete('/navigation/delete-disk-unit/:id', (req: Request, res: Response) => 
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
                     getJsonResponse(res, 500, "delete-failure", notificationMessages, false);
-                    connection.release();
                     return;
                 });
             } finally {

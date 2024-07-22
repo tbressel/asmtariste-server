@@ -298,7 +298,7 @@ api.post('/file/add', upload.single('file'), (req, res) => {
             catch (error) {
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
-                    (0, notifications_2.getJsonResponse)(res, 500, "certificate-failure", notifications_1.notificationMessages, false);
+                    (0, notifications_2.getJsonResponse)(res, 500, "upload-failure", notifications_1.notificationMessages, false);
                     return;
                 });
             }

@@ -17,6 +17,7 @@ export const notificationMessages: NotificationMessages = {
     "dbconnect-error": "Database connection has failed",
     "maxconnect-reached": "Too many connection to the database, please try later",
     "request-failure": "The request has failed",
+    "upload-failure": "Erreur lors de l'envoie des données",
     "session-over": "Ton temps de connexion est écoulé, reconnecte toi (je  vais essayer d'améliorer çà)",
     "email-failure": "The email dosn't exist in the database",
     "email-success": "The email exists in the database",

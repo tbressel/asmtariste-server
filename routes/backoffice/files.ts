@@ -269,7 +269,6 @@ api.delete('/file/delete/:id', (req: Request, res: Response) => {
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
                     getJsonResponse(res, 500, "certificate-failure", notificationMessages, false);
-                    connection.release();
                     return;
                 });
             } finally {
@@ -367,7 +366,7 @@ api.post('/file/add', upload.single('file'), (req: Request, res: Response) => {
             } catch (error) {
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
-                    getJsonResponse(res, 500, "certificate-failure", notificationMessages, false);
+                    getJsonResponse(res, 500, "upload-failure", notificationMessages, false);
                     return;
                 });
             } finally {

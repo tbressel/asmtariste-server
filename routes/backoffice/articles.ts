@@ -159,7 +159,6 @@ api.post('/article/create', upload.single('coverImage'), (req: Request, res: Res
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
                     getJsonResponse(res, 500, "request-failure", notificationMessages, false);
-                    connection.release();
                     return;
                 });
             } finally {
