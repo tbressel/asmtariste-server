@@ -278,7 +278,6 @@ api.patch('/navigation/move-menu-item/:id', token_1.authToken, (req, res) => {
                 // If an error occurred, rollback the transaction
                 connection.rollback(() => {
                     (0, notifications_2.getJsonResponse)(res, 500, "move-failure", notifications_1.notificationMessages, false);
-                    connection.release();
                     return;
                 });
             }
